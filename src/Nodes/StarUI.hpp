@@ -151,11 +151,13 @@ namespace mh {
 				case "YDWETimerStartMultiple"s_hash: {//逆天计时器
 					auto closure = std::dynamic_pointer_cast<YDWETimerStartMultiple>(last_closure);
 					ptype = closure->getHandleName();
+					ptype = "GetHandleId(" + ptype + ")";
 					break;
 				}
 				case "YDWERegisterTriggerMultiple"s_hash: {//逆天触发器
 					auto closure = std::dynamic_pointer_cast<YDWERegisterTriggerMultiple>(last_closure);
 					ptype = closure->getHandleName();
+					ptype = "GetHandleId(" + ptype + ")";
 					break;
 				}
 				case "EC_ShootReadyEx"s_hash:
@@ -163,6 +165,7 @@ namespace mh {
 				case "StarES_EX"s_hash: {//逆天触发器
 					auto closure = std::dynamic_pointer_cast<StarTriggerClosureTypeNode>(last_closure);
 					ptype = closure->getHandleName();
+					ptype = "GetHandleId(" + ptype + ")";
 					break;
 				}
 				default:
@@ -332,11 +335,13 @@ namespace mh {
 				case "YDWETimerStartMultiple"s_hash: {//逆天计时器
 					auto closure = std::dynamic_pointer_cast<YDWETimerStartMultiple>(last_closure);
 					ptype = closure->getHandleName();
+					ptype = "GetHandleId(" + ptype + ")";
 					break;
 				}
 				case "YDWERegisterTriggerMultiple"s_hash: {//逆天触发器
 					auto closure = std::dynamic_pointer_cast<YDWERegisterTriggerMultiple>(last_closure);
 					ptype = closure->getHandleName();
+					ptype = "GetHandleId(" + ptype + ")";
 					break;
 				}
 				case "EC_ShootReadyEx"s_hash:
@@ -344,6 +349,7 @@ namespace mh {
 				case "StarES_EX"s_hash: {//逆天触发器
 					auto closure = std::dynamic_pointer_cast<StarTriggerClosureTypeNode>(last_closure);
 					ptype = closure->getHandleName();
+					ptype = "GetHandleId(" + ptype + ")";
 					break;
 				}
 				default:
@@ -445,11 +451,13 @@ namespace mh {
 				case "YDWETimerStartMultiple"s_hash: {//逆天计时器
 					auto closure = std::dynamic_pointer_cast<YDWETimerStartMultiple>(last_closure);
 					ptype = closure->getHandleName();
+					ptype = "GetHandleId(" + ptype + ")";
 					break;
 				}
 				case "YDWERegisterTriggerMultiple"s_hash: {//逆天触发器
 					auto closure = std::dynamic_pointer_cast<YDWERegisterTriggerMultiple>(last_closure);
 					ptype = closure->getHandleName();
+					ptype = "GetHandleId(" + ptype + ")";
 					break;
 				}
 				case "EC_ShootReadyEx"s_hash:
@@ -457,6 +465,7 @@ namespace mh {
 				case "StarES_EX"s_hash: {//逆天触发器
 					auto closure = std::dynamic_pointer_cast<StarTriggerClosureTypeNode>(last_closure);
 					ptype = closure->getHandleName();
+					ptype = "GetHandleId(" + ptype + ")";
 					break;
 				}
 				default:
