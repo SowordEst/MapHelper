@@ -14,7 +14,11 @@
 #include "EventNode.hpp"
 #include "ClosureNode.hpp"
 #include "Closures.hpp"
+#define StarUI //开启StarUI
 
+#ifdef StarUI
+#include "StarUI.hpp"
+#endif // StarUI
 namespace mh {
 	typedef std::shared_ptr<class ActionNode> ActionNodePtr;
 
@@ -1106,6 +1110,10 @@ namespace mh {
 
 	//动作节点
 	std::unordered_map<std::string, MakeNode> MakeActionNodeMap = {
+		#ifdef StarUI
+			#include "StarUI_Node.cpp";
+		#endif // StarUI
+
 		{"CommentString",			CommentString::From},
 		//{"CustomScriptCode",		CustomScriptCode::From},
 		{"GetTriggerName",			GetTriggerName::From},
