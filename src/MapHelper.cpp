@@ -1,11 +1,7 @@
-﻿// mapHelper.cpp : 定义 DLL 应用程序的导出函数。
-//
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include <io.h>
 #include <fcntl.h>
 #include "mapHelper.h"
-
-
 #include <sstream>
 #include <base\hook\fp_call.h>
 #include <base\util\json.hpp>
@@ -16,6 +12,7 @@
 #include <Commctrl.h>
 #include <base\hook\iat.h>
 
+// mapHelper.cpp : 定义 DLL 应用程序的导出函数。
 extern MakeEditorData* g_make_editor_data;
 
 #pragma warning(disable:4996)
@@ -39,7 +36,7 @@ namespace real
 	uintptr_t GetString;
 	uintptr_t GetWEString;
 	uintptr_t GetActionType;
-	
+
 	uintptr_t ParamTypeStrncmp1;
 	uintptr_t ParamTypeStrncmpEnd1;
 
@@ -139,22 +136,22 @@ Helper::~Helper()
 
 static void __declspec(naked) insertSaveMapData()
 {
-	
+
 	__asm
 	{
 		mov g_object, esi
-		lea eax, dword ptr ss : [ebp - 0x10c];
+		lea eax, dword ptr ss : [ebp - 0x10c] ;
 		mov g_path, eax
-		pushad
-		pushfd
-		call get_helper
-		mov ecx, eax
-	
-		call Helper::onSaveMap
-		mov g_addr, eax
-		popfd
-		popad
-		jmp g_addr
+			pushad
+			pushfd
+			call get_helper
+			mov ecx, eax
+
+			call Helper::onSaveMap
+			mov g_addr, eax
+			popfd
+			popad
+			jmp g_addr
 	}
 }
 
@@ -166,34 +163,34 @@ static void __declspec(naked) insertConvertTrigger()
 		call get_helper
 		mov ecx, eax
 		call Helper::onSelectConvartMode
-		test eax,eax 
+		test eax, eax
 		je pos
 
-		mov ecx,g_object
+		mov ecx, g_object
 		jmp real::ConvertTrigger
-		
-	pos:
+
+		pos :
 
 		pushad
-		pushfd 
-		call get_helper
-		mov ecx,eax
-		push g_object
-		call Helper::onConvertTrigger
-		mov g_object,eax 
-		popfd
-		popad 
-		mov eax,g_object
-		ret 0x4
+			pushfd
+			call get_helper
+			mov ecx, eax
+			push g_object
+			call Helper::onConvertTrigger
+			mov g_object, eax
+			popfd
+			popad
+			mov eax, g_object
+			ret 0x4
 	}
-	
+
 
 }
 
 
 
 //修改特定UI的子动作数量
-int __fastcall fakeGetChildCount(Action* action)
+int __fastcall fakeGetChildCount(Action * action)
 {
 	if (g_make_editor_data)
 	{
@@ -209,19 +206,19 @@ int __fastcall fakeGetChildCount(Action* action)
 }
 
 //修改特定的UI名字
-static int __fastcall fakeGetString(Action* action, uint32_t edx,int index, char* buffer, int len)
+static int __fastcall fakeGetString(Action * action, uint32_t edx, int index, char* buffer, int len)
 {
 	auto it = g_actionInfoTable.find(std::string(action->name));
 	if (it == g_actionInfoTable.end())
 	{
 		return fast_call<int>(real::GetString, action, edx, index, buffer, len);
-		
+
 	}
 	return fast_call<int>(real::GetWEString, it->second[index].name.c_str(), buffer, len, 0);
 }
 
 //返回动作组的动作类型
-static int __fastcall fakeGetActionType(Action* action, uint32_t edx, int index)
+static int __fastcall fakeGetActionType(Action * action, uint32_t edx, int index)
 {
 	auto it = g_actionInfoTable.find(std::string(action->name));
 	if (it == g_actionInfoTable.end())
@@ -233,26 +230,29 @@ static int __fastcall fakeGetActionType(Action* action, uint32_t edx, int index)
 }
 
 //根据指定参数值 修改目标参数类型
-static void setParamerType(Action* action, int flag, int type_param_index, int target_param_index)
+static void setParamerType(Action * action, int flag, int type_param_index, int target_param_index)
 {
 	Parameter* param = action->parameters[type_param_index];
-	if (!param || strncmp(param->value,"typename_",8) != 0)
+
+
+	if (!param || !param->value) {
 		return;
-	const char* type = param->value + 11; //typename_01_integer  + 11 = integer
-	auto it = g_typenames.find(type);
-	if (it == g_typenames.end())
-	{
-		g_typenames.emplace(type, param->value);
 	}
+
+	const char* pos = strchr(param->value, '_');
+	if (!pos) {
+		return;
+	}
+	const char* type = pos + 1;
 
 	//print("将 %s 第%i个参数类型修改为 %s\n",action->name, target_param_index, type);
 	this_call<int>(real::SetParamType, action, target_param_index, type, flag);
 }
 
 //插入到创建UI中 根据动作参数改变对应UI类型
-static void __fastcall insertCreateUI(Action* action,uint32_t edx, int flag)
+static void __fastcall insertCreateUI(Action * action, uint32_t edx, int flag)
 {
-	
+
 	switch (hash_(action->name))
 	{
 	#ifdef StarUI
@@ -286,7 +286,7 @@ static void __fastcall insertCreateUI(Action* action,uint32_t edx, int flag)
 }
 
 //任意返回类型的操作
-static int __fastcall fakeReturnTypeStrcmp(const char* type1,const char* type2)
+static int __fastcall fakeReturnTypeStrcmp(const char* type1, const char* type2)
 {
 	//类型相等 或者type1 是任意类型 即返回字符串相同的结果
 	if (strcmp(type1, type2) == 0 || (strcmp(type1, "AnyReturnType") == 0 && g_typenames.find(type2) != g_typenames.end()))
@@ -381,6 +381,59 @@ static int WINAPI fakeMessageBoxA(HWND hwnd, const char* message, const char* ti
 }
 
 
+
+static void WINAPI earchConfigData(const char* table_name, const char* key, uint32_t object)
+{
+	if (!object) return;
+
+	uintptr_t parent = *(uintptr_t*)(object + 0x1C);
+	if (!parent) return;
+
+	const char* parent_name = *(const char**)(parent + 0x18);
+
+	if (!parent_name)
+		return;
+	const char* pos = strchr(key, '_');
+	if (!pos) {
+		return;
+	}
+	const char* type = pos + 1;
+
+	auto& editor = get_trigger_editor();
+
+	if (editor.getTypeData(type)) {
+		g_typenames.emplace(type, key);
+		//printf("[%s][%s] = %s\n", table_name, key, parent_name);
+	}
+
+}
+
+static void __declspec(naked) fakeEarchConfigData()
+{
+	__asm
+	{
+		mov eax, [esp + 4]
+		push edi
+		push ecx
+		push eax
+		call earchConfigData
+		ret 0x4
+	}
+
+}
+//迭代器 遍历TriggerParams 
+static void initTypeName() {
+
+	uintptr_t earch_config_table = WorldEditor::getAddress(0x004D1F40);
+	const char* table_name = "TriggerParams";
+	fast_call<uintptr_t>(earch_config_table, table_name, &fakeEarchConfigData, table_name);
+}
+
+
+
+
+
+
 uintptr_t Helper::onSaveMap()
 {
 	auto& editor = get_world_editor();
@@ -411,11 +464,11 @@ void Helper::attach()
 
 		return;
 	}
-		
-		
-	
+
+
+
 	GetModuleFileNameA(GetModuleHandleA("ydbase.dll"), buffer, MAX_PATH);
-	
+
 	m_configPath = fs::path(buffer).remove_filename() / "EverConfig.cfg";
 
 	ydwe_path = m_configPath.parent_path().parent_path();
@@ -436,7 +489,7 @@ void Helper::attach()
 
 	//当保存或测试地图时保存生成数据
 	uintptr_t addr = editor.getAddress(0x0055CDE6);
-	hook::install(&addr, reinterpret_cast<uintptr_t>(&insertSaveMapData),m_hookSaveMap);
+	hook::install(&addr, reinterpret_cast<uintptr_t>(&insertSaveMapData), m_hookSaveMap);
 
 	//当t转j时 生成脚本
 	real::SetParamType = editor.getAddress(0x005D7C00);
@@ -467,7 +520,7 @@ void Helper::attach()
 	//hook获取子动作数量
 	real::GetChildCount = editor.getAddress(0x005DAE20);
 	hook::install(&real::GetChildCount, reinterpret_cast<uintptr_t>(&fakeGetChildCount), m_hookGetChildCount);
-	
+
 	//hook获取动作组的名字
 	real::GetWEString = editor.getAddress(0x004EEC00);
 	real::GetString = editor.getAddress(0x005DAEE0);
@@ -506,7 +559,7 @@ void Helper::attach()
 
 	editor.loadConfigData();
 
-
+	initTypeName();
 
 	auto& manager = get_ydplugin_manager();
 
@@ -541,9 +594,9 @@ void Helper::detach()
 	hook::uninstall(m_hookParamTypeStrncmp1);
 	hook::uninstall(m_hookParamTypeStrncmp2);
 	hook::uninstall(m_hookGetParamType);
-	
+
 	base::hook::iat(GetModuleHandleA(nullptr), "kernel32.dll", "MessageBoxA", real::MessageBoxA);
-	
+
 
 #if !defined(EMBED_YDWE)
 	//释放控制台避免崩溃
@@ -592,7 +645,7 @@ int Helper::onSelectConvartMode()
 
 
 
-int Helper::onConvertTrigger(Trigger* trigger)
+int Helper::onConvertTrigger(Trigger * trigger)
 {
 	auto& v_we = get_world_editor();
 	TriggerData* data = v_we.getEditorData()->triggers;
@@ -619,7 +672,7 @@ void Helper::enableConsole()
 
 	}
 	else
-	{	
+	{
 		auto v_is_ok = AllocConsole();
 		if (v_is_ok)
 		{
@@ -634,8 +687,8 @@ void Helper::enableConsole()
 	v_hwnd_console = ::GetConsoleWindow();
 	if (v_hwnd_console)
 	{
-		
-		  
+
+
 		DWORD mode;
 		HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
 		GetConsoleMode(hStdin, &mode);
@@ -645,7 +698,7 @@ void Helper::enableConsole()
 		SetConsoleMode(hStdin, mode);
 		::DeleteMenu(::GetSystemMenu(v_hwnd_console, FALSE), SC_CLOSE, MF_BYCOMMAND);
 		::DrawMenuBar(v_hwnd_console);
-		::SetWindowTextA(v_hwnd_console, "ydwe保存加速插件 2.2i");
+		::SetWindowTextA(v_hwnd_console, "ydwe保存加速插件 2.2j");
 		std::cout
 			<< "用来加速ydwe保存地图的插件，对地形装饰物，触发编辑器极速优化\n"
 			<< "参与开发者 ：w4454962、 神话、 actboy168、月升朝霞、白喵、裂魂\n"
@@ -654,8 +707,9 @@ void Helper::enableConsole()
 			<< "bug反馈：魔兽地图编辑器吧 -> @w4454962 加速器bug反馈群 -> 724829943   lua技术交流群 -> 1019770872。\n"
 			<< "						----2022/1/10\n"
 			<< "\n"
-			<< "version 2.2i update:\n"
-			<< "2.2i:修复多开关闭地图提示保存,关闭编辑器提示保存会导致地图错乱的bug\n"
+			<< "version 2.2j update:\n"
+			<< "2.2j: 修复设置逆天局部变量 里读局部变量ui不显示的问题\n"
+			<< "2.2i: 修复多开关闭地图提示保存,关闭编辑器提示保存会导致地图错乱的bug\n"
 			<< "2.2h: 修复实数变量变化事件缺少双引号的bug\n"
 			<< "修复了 迷雾、天气、光照、环境音效、金矿失效的问题。\n"
 			<< "加强了预处理器#include 支持中文路径。 \n"
@@ -711,7 +765,7 @@ void Helper::setMenuEnable(bool is_enable) {
 
 	for (auto& hwnd : list) {
 		HMENU menu = GetMenu(hwnd);
-		
+
 		if (menu == NULL) {
 			continue;
 		}
@@ -742,7 +796,7 @@ void Helper::setMenuEnable(bool is_enable) {
 		HWND toolbar = FindWindowExA(hwnd, 0, "ToolbarWindow32", 0);
 		if (toolbar) {
 			for (int i = 0; i < 100; i++) {
-				::SendMessage(toolbar, TB_HIDEBUTTON, i, MAKELPARAM(is_enable? FALSE:TRUE, 0));
+				::SendMessage(toolbar, TB_HIDEBUTTON, i, MAKELPARAM(is_enable ? FALSE : TRUE, 0));
 			}
 		}
 	}
