@@ -26,5 +26,7 @@
 		{ "StarDelLoc",								StarDelLoc::From },//
 		{ "SH_SaveAny",								SH_SaveAny::From },//
 		{ "SH_LoadAny",								SH_LoadAny::From },//
+		{ "StarAny2I",								StarAny2I::From },//
+			
 		//☆StarUI End  ☆
 		//该文件配置为 不参与生成

@@ -710,10 +710,7 @@ namespace mh {
 
 			virtual std::string toString(TriggerFunction* func) override {
 			auto params = getParameterList();
-
-			//typename_01_integer  + 11 = integer
 			std::string result = func->getSpaces();
-
 			result += "call SH_SaveAnyValue(";
 			result += params[0]->toString() + ",";
 			result += params[1]->toString() + ",";
@@ -746,6 +743,27 @@ namespace mh {
 			return result;
 		}
 	};
+	class StarAny2I : public ActionNode {
+	public:
+		REGISTER_FROM_ACTION(StarAny2I)
+
+			virtual std::string toString(TriggerFunction* func) override {
+
+			auto params = getParameterList();
+
+			ParameterNodePtr parent = std::dynamic_pointer_cast<ParameterNode>(getParentNode());
+			Parameter* parent_parameter = (Parameter*)parent->getData();
+
+			std::string result;
+			result += "StarAny2I(";
+			result += m_action->parameters[0]->value + 11;
+			result += ","+params[1]->toString() + "";
+			result += ")";
+			return result;
+		}
+	};
+
+	//
 	//=========以下只需要可变类型
 	//"SUTL_UnitAddEventCallBack", //只需要可变类型
 	//"SUTL_UnitRemoveEventCallBack", //只需要可变类型
