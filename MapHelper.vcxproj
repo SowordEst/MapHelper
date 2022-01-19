@@ -207,8 +207,12 @@
     <ClCompile Include="src\base\util\unicode.cpp" />
     <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\MapHelper.cpp" />
-    <None Include="src\StarUI\StarUI_ActionInfoTable.h" />
-    <None Include="src\StarUI\StarUI_insertCreateUI.h" />
+    <None Include="src\StarUI\StarUI_ActionInfoTable.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="src\StarUI\StarUI_insertCreateUI.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
     <None Include="src\StarUI\StarUI_Node.cpp" />
     <ClCompile Include="src\YDJassHelperPatch.cpp" />
     <ClCompile Include="src\YDPluginManager.cpp" />
