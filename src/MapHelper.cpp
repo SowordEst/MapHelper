@@ -55,7 +55,7 @@ namespace real
 
 ActionInfoMap g_actionInfoTable = {
 	#ifdef StarUI
-		#include "StarUI_ActionInfoTable.cpp"
+		#include "StarUI_ActionInfoTable.h"
 	#endif // StarUI
 	{"YDWETimerStartMultiple" , {
 		{ Action::Type::action , "WESTRING_PARAMETERS" },
@@ -256,7 +256,7 @@ static void __fastcall insertCreateUI(Action * action, uint32_t edx, int flag)
 	switch (hash_(action->name))
 	{
 	#ifdef StarUI
-		#include "StarUI_insertCreateUI.cpp"
+		#include "StarUI_insertCreateUI.h"
 	#endif // StarUI
 	case "YDWESetAnyTypeLocalVariable"s_hash:
 		setParamerType(action, flag, 0, 2);

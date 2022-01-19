@@ -133,9 +133,6 @@
     <ClCompile Include="src\YDJassHelperPatch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\StarUI_insertCreateUI.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\MapHelper.h">
@@ -270,11 +267,14 @@
     <None Include="resource\wave.exe">
       <Filter>resource</Filter>
     </None>
-    <None Include="src\StarUI_ActionInfoTable.cpp">
+    <None Include="src\StarUI_ActionInfoTable.h">
       <Filter>src</Filter>
     </None>
     <None Include="src\Nodes\StarUI_Node.cpp">
       <Filter>src\Nodes</Filter>
+    </None>
+    <None Include="src\StarUI_insertCreateUI.h">
+      <Filter>src</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

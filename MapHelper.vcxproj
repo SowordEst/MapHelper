@@ -207,8 +207,8 @@
     <ClCompile Include="src\base\util\unicode.cpp" />
     <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\MapHelper.cpp" />
-    <None Include="src\StarUI_ActionInfoTable.cpp" />
-    <None Include="src\StarUI_insertCreateUI.cpp" />
+    <None Include="src\StarUI_ActionInfoTable.h" />
+    <None Include="src\StarUI_insertCreateUI.h" />
     <None Include="src\Nodes\StarUI_Node.cpp" />
     <ClCompile Include="src\YDJassHelperPatch.cpp" />
     <ClCompile Include="src\YDPluginManager.cpp" />
