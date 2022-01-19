@@ -4,6 +4,7 @@
 namespace mh {
 //错误可能:
 //getHandleName不一定能够准确的获取到父级的handlename
+//本来就不行 问题不大
 #pragma region //☆生成子函数并传参的动作☆
 	//以下实现相同,已合并
 	//☆贝塞尔二阶弹幕☆ √

@@ -17,7 +17,7 @@
 #define StarUI //开启StarUI
 
 #ifdef StarUI
-#include "StarUI.hpp"
+#include "StarUI\StarUI.hpp"
 #endif // StarUI
 namespace mh {
 	typedef std::shared_ptr<class ActionNode> ActionNodePtr;
@@ -1111,7 +1111,7 @@ namespace mh {
 	//动作节点
 	std::unordered_map<std::string, MakeNode> MakeActionNodeMap = {
 		#ifdef StarUI
-			#include "StarUI_Node.cpp";
+			#include "StarUI\StarUI_Node.cpp";
 		#endif // StarUI
 
 		{"CommentString",			CommentString::From},

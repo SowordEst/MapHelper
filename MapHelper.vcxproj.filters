@@ -38,6 +38,9 @@
     <Filter Include="resource">
       <UniqueIdentifier>{c6fbacfe-88d4-4bb0-9266-cd1da0666285}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\StarUI">
+      <UniqueIdentifier>{9faf63ea-7bbc-4665-896c-726575ee3412}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3rd\Detours\src\creatwth.cpp">
@@ -256,8 +259,8 @@
     <ClInclude Include="src\YDJassHelperPatch.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Nodes\StarUI.hpp">
-      <Filter>src\Nodes</Filter>
+    <ClInclude Include="src\StarUI\StarUI.hpp">
+      <Filter>src\StarUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -267,14 +270,14 @@
     <None Include="resource\wave.exe">
       <Filter>resource</Filter>
     </None>
-    <None Include="src\StarUI_ActionInfoTable.h">
-      <Filter>src</Filter>
+    <None Include="src\StarUI\StarUI_ActionInfoTable.h">
+      <Filter>src\StarUI</Filter>
     </None>
-    <None Include="src\Nodes\StarUI_Node.cpp">
-      <Filter>src\Nodes</Filter>
+    <None Include="src\StarUI\StarUI_insertCreateUI.h">
+      <Filter>src\StarUI</Filter>
     </None>
-    <None Include="src\StarUI_insertCreateUI.h">
-      <Filter>src</Filter>
+    <None Include="src\StarUI\StarUI_Node.cpp">
+      <Filter>src\StarUI</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
